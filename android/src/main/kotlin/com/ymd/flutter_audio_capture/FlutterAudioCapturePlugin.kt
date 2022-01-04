@@ -12,12 +12,9 @@ import io.flutter.plugin.common.PluginRegistry.Registrar
 public class FlutterAudioCapturePlugin: FlutterPlugin, MethodCallHandler {
     private val audioCaptureStreamHandler: AudioCaptureStreamHandler = AudioCaptureStreamHandler()
 
-  private var eventChannel: EventChannel? = null
-
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     val messenger = flutterPluginBinding.getBinaryMessenger()
-    eventChannel = EventChannel(messenger, this.audioCaptureStreamHandler.eventChannelName)
-    eventChannel?.setStreamHandler(this.audioCaptureStreamHandler)
+    EventChannel(messenger, this.audioCaptureStreamHandler.eventChannelName).setStreamHandler(this.audioCaptureStreamHandler)
   }
 
   // This static function is optional and equivalent to onAttachedToEngine. It supports the old
@@ -39,6 +36,6 @@ public class FlutterAudioCapturePlugin: FlutterPlugin, MethodCallHandler {
   }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-    eventChannel?.setStreamHandler(null)
+    audioCaptureStreamHandler.stopRecording()
   }
 }
