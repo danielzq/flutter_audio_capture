@@ -21,7 +21,7 @@ class FlutterAudioCapture {
 
   Future<void> stop() async {
     if (_audioCaptureEventChannelSubscription == null) return;
-    _audioCaptureEventChannelSubscription!.cancel();
+    await _audioCaptureEventChannelSubscription!.cancel();
     _audioCaptureEventChannelSubscription = null;
   }
 }
