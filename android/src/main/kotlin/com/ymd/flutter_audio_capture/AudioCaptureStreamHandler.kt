@@ -63,7 +63,7 @@ public class AudioCaptureStreamHandler: StreamHandler {
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_AUDIO)
 
         val bufferSize: Int = AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_FORMAT)
-        val audioBuffer: FloatArray = FloatArray(bufferSize)
+        val audioBuffer = FloatArray(bufferSize)
         val record: AudioRecord = AudioRecord.Builder()
                         .setAudioSource(MediaRecorder.AudioSource.DEFAULT)
                         .setAudioFormat(
@@ -87,14 +87,14 @@ public class AudioCaptureStreamHandler: StreamHandler {
             } catch (e: Exception) {
                 Log.d(TAG, e.toString())
             }
-
-            uiThreadHandler.post(object: Runnable {
-                override fun run() {
-                    if (isCapturing) {
-                        _events?.success(audioBuffer.toList())
-                    }
-                }
-            })
+            _events?.success(audioBuffer.toList())
+//            uiThreadHandler.post(object: Runnable {
+//                override fun run() {
+//                    if (isCapturing) {
+//                        _events?.success(audioBuffer.toList())
+//                    }
+//                }
+//            })
         }
 
         record.stop()
